@@ -12,7 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: ${{ github.event.issue.pull_request.head.ref }}
+          fetch-depth: 1
       - name: Echo Running Message
         run: echo "Pipeline is running"
       - name: Display README
