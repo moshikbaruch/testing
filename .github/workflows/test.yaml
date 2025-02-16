@@ -14,18 +14,22 @@ jobs:
         id: pr
         uses: actions/github-script@v7
         with:
+          result-encoding: string
           script: |
             const issue_number = context.payload.issue.number;
             const { owner, repo } = context.repo;
+
+            // Fetch issue details
             const issue = await github.issues.get({ owner, repo, issue_number });
 
+            // Check if it's a PR
             if (!issue.data.pull_request) {
-              throw new Error("Comment is not on a PR.");
+              throw new Error("This issue is not linked to a PR.");
             }
 
+            // Fetch PR details
             const pr = await github.pulls.get({ owner, repo, pull_number: issue_number });
             return pr.data.head.ref;
-          result-encoding: string
 
       - uses: actions/checkout@v4
         with:
@@ -37,3 +41,4 @@ jobs:
 
       - name: Display README
         run: cat README.md
+
