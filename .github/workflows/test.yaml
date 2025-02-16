@@ -10,16 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: React to comment
-      #   uses: actions/github-script@v7
-      #   with:
-      #     script: |
-      #       const {owner, repo} = context.issue
-      #       github.reactions.createForIssueComment({
-      #         owner,
-      #         repo,
-      #         comment_id: context.payload.comment.id,
-      #         content: "eyes",
-      #       });
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.issue.pull_request.head.ref }}
+          fetch-depth: 1
       - name: Echo Running Message
         run: echo "Pipeline is running"
+      - name: Display README
+        run: cat README.md
