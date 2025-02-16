@@ -17,6 +17,12 @@ jobs:
           script: |
             const issue_number = context.payload.issue.number;
             const { owner, repo } = context.repo;
+            const issue = await github.issues.get({ owner, repo, issue_number });
+
+            if (!issue.data.pull_request) {
+              throw new Error("Comment is not on a PR.");
+            }
+
             const pr = await github.pulls.get({ owner, repo, pull_number: issue_number });
             return pr.data.head.ref;
           result-encoding: string
